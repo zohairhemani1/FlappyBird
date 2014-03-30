@@ -51,19 +51,19 @@
 
 @-webkit-keyframes animBird {
    from { background-position: 0px 0px; }
-   to { background-position: 0px -96px; }
+   to { background-position: 0px -146px; }
 }
 @-moz-keyframes animBird {
    from { background-position: 0px 0px; }
-   to { background-position: 0px -96px; }
+   to { background-position: 0px -146px; }
 }
 @-o-keyframes animBird {
    from { background-position: 0px 0px; }
-   to { background-position: 0px -96px; }
+   to { background-position: 0px -146px; }
 }
 @keyframes animBird {
    from { background-position: 0px 0px; }
-   to { background-position: 0px -96px; }
+   to { background-position: 0px -146px; }
 }
 
 @-webkit-keyframes animPipe {
@@ -154,7 +154,7 @@ Screen - Game
    top: 0;
    width: 100%;
    height: 80%;
-   background-image: url('../assets/sky.png');
+   background-image: url('../assets/bbackground.png');
    background-repeat: repeat-x;
    background-position: 0px 100%;
    background-color: #4ec0ca;
@@ -300,6 +300,8 @@ Screen - Game
    width: 0;
    height: 0;
    border: 1px solid red;
+   background-color: #FFF;
+   z-index: 999;
 }
 
 #player
@@ -312,8 +314,8 @@ Screen - Game
 {
    position: absolute;
    width: 34px;
-   height: 24px;
-   background-image: url('../assets/bird.png');
+   height: 36px;
+   background-image: url('../assets/bball.png');
    
    -webkit-animation: animBird 300ms steps(4) infinite;
    animation: animBird 300ms steps(4) infinite;
@@ -326,7 +328,6 @@ Screen - Game
    width: 52px;
    height: 100%;
    z-index: 10;
-   
    -webkit-animation: animPipe 7500ms linear;
    animation: animPipe 7500ms linear;
 }
@@ -354,7 +355,7 @@ Screen - Game
 .pipe_lower
 {
    position: absolute;
-   bottom: 0;
+   bottom: 0px;
    width: 52px;
    background-image: url('../assets/pipe.png');
    background-repeat: repeat-y;
