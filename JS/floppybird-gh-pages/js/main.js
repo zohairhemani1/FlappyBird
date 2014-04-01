@@ -258,14 +258,16 @@ function gameloop() {
       if(boxtop > pipetop && boxbottom < pipebottom)
       {
          //yeah! we're within bounds
-         
+         console.log("out");
+         playerDead();
+        return;
+   
       }
       else
       {
          //no! we touched the pipe
-         //playerDead();
-        // return;
-      }
+      
+	  }
    }
    
    
