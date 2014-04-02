@@ -228,6 +228,31 @@ function gameloop() {
    piperight = pipeleft + pipewidth;
    pipebottom = nextpipeupper.height();
 	
+		
+		
+		
+		
+   // detecting if the box is within the boundaries or not
+		
+		
+		if(boxright > pipeleft)
+   		{
+		
+			if(boxtop < pipetop+pipebottom)
+			{
+				playerDead();
+			}
+			else
+			{	
+				console.log('else');
+				
+			}
+		
+		   
+   		}
+	
+	
+	
 
 
 }else{
@@ -239,6 +264,31 @@ function gameloop() {
    pipeleft = nextpipeupper.offset().left - 2; // for some reason it starts at the inner pipes offset, not the outer pipes.
    piperight = pipeleft + pipewidth;
    pipebottom =nextpipeupper.height();
+   
+   
+   // detecting if the box is within the boundaries or not
+   
+   
+   if(boxright > pipeleft)
+   		{
+		
+			if(boxbottom > pipetop)
+			{
+				playerDead();
+			}
+			else
+			{	
+				console.log('else');
+				
+			}
+		
+		   
+   		}
+   
+   
+   
+   
+   
 	
 	
 	}
@@ -252,7 +302,7 @@ function gameloop() {
    }
    
    //have we gotten inside the pipe yet?
-   if(boxright > pipeleft)
+   /** if(boxright > pipeleft)
    {
       //we're within the pipe, have we passed between upper and lower pipes?
       if(boxtop > pipetop && boxbottom < pipebottom)
@@ -269,6 +319,14 @@ function gameloop() {
       
 	  }
    }
+   **/
+   
+   
+   
+   
+   
+   
+   
    
    
    //have we passed the imminent danger?
