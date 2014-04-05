@@ -15,7 +15,7 @@
    limitations under the License.
 */
 
-var debugmode = true;
+var debugmode = false;
 var isBottom=true;
 var _pipeheight=0;
 var _topheight=0;
