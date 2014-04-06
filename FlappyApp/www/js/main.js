@@ -149,7 +149,7 @@ function startGame()
    //start up our loops
    var updaterate = 1000.0 / 60.0 ; //60 times a second
    loopGameloop = setInterval(gameloop, updaterate);
-   loopPipeloop = setInterval(updatePipes, 700);
+   loopPipeloop = setInterval(updatePipes, 900);
    //loopCoinloop = setInterval(updateCoins,700);
    
    //jump from the start!
@@ -666,7 +666,7 @@ function updatePipes()
       isSwitch=!isSwitch;
 
 
-//updateCoins();
+updateCoins();
 
 
 }
