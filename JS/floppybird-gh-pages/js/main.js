@@ -13,36 +13,42 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+   */
 
-var debugmode = false;
-var isBottom=true;
-var _pipeheight=0;
-var _topheight=0;
-var _bottomHeight=0;
+   var isSwitch=false;
+   var debugmode = true;
+   var isBottom=true;
+   var _pipeheight=0;
+   var _topheight=0;
+   var _bottomHeight=0;
+   var coinHeight=60;
+   var isFirstTimeCoin=false;
+   var isInBetweenCoin=false;
 
-var states = Object.freeze({
-   SplashScreen: 0,
-   GameScreen: 1,
-   ScoreScreen: 2
-});
+   var states = Object.freeze({
+      SplashScreen: 0,
+      GameScreen: 1,
+      ScoreScreen: 2
+   });
 
-var currentstate;
+   var currentstate;
 
-var gravity = 0.25;
-var velocity = 0;
-var position = 180;
-var rotation = 0;
-var jump = -4.6;
+   var gravity = 0.25;
+   var velocity = 0;
+   var position = 180;
+   var rotation = 0;
+   var jump = -4.6;
 
-var score = 0;
-var highscore = 0;
+   var score = 0;
+   var highscore = 0;
 
-var pipeheight = 90;
-var pipewidth = 52;
-var pipes = new Array();
+   var pipeheight = 90;
+   var pipewidth = 85;
+   var pipes = new Array();
 
-var replayclickable = false;
+   var coins= new Array();
+
+   var replayclickable = false;
 
 //sounds
 var volume = 30;
@@ -56,6 +62,7 @@ buzz.all().setVolume(volume);
 //loops
 var loopGameloop;
 var loopPipeloop;
+var loopCoinloop;
 
 $(document).ready(function() {
    if(window.location.search == "?debug")
@@ -142,7 +149,8 @@ function startGame()
    //start up our loops
    var updaterate = 1000.0 / 60.0 ; //60 times a second
    loopGameloop = setInterval(gameloop, updaterate);
-   loopPipeloop = setInterval(updatePipes, 1400);
+   loopPipeloop = setInterval(updatePipes, 700);
+   //loopCoinloop = setInterval(updateCoins,700);
    
    //jump from the start!
    playerJump();
@@ -207,58 +215,56 @@ function gameloop() {
    
    
    //determine the bounding box of the next pipes inner area
-  var nextpipe = pipes[0];
-  var nextpipeupper;
-  var pipetop;
-  var pipeleft;
-  var piperight;
-  var pipebottom;
-  
-  if(nextpipe[0].childNodes[0].className=="pipe_upper"){
-   nextpipeupper = nextpipe.children(".pipe_upper");
-   console.log(nextpipe[0].childNodes[0].className);
-   
+   var nextpipe = pipes[0];
+   var nextpipeupper;
+   var pipetop;
+   var pipeleft;
+   var piperight;
+   var pipebottom;
+
+   if(nextpipe[0].childNodes[0].className=="pipe_upper"){
+      nextpipeupper = nextpipe.children(".pipe_upper");
+
+
    //pipetop = nextpipeupper.offset().top + nextpipeupper.height();
    //pipeleft = nextpipeupper.offset().left - 2; // for some reason it starts at the inner pipes offset, not the outer pipes.
    //piperight = pipeleft + pipewidth;
    //pipebottom = pipetop + pipeheight;
 
    pipetop = nextpipeupper.offset().top;
-   pipeleft = nextpipeupper.offset().left - 2; // for some reason it starts at the inner pipes offset, not the outer pipes.
-   piperight = pipeleft + pipewidth;
+   pipeleft = nextpipeupper.offset().left; // for some reason it starts at the inner pipes offset, not the outer pipes.
+   piperight = pipeleft + pipewidth+20;
    pipebottom = nextpipeupper.height();
-	
-		
-		
-		
-		
+
+
+
+
+
    // detecting if the box is within the boundaries or not
-		
-		
-		if(boxright > pipeleft)
-   		{
-		
-			if(boxtop < pipetop+pipebottom)
-			{
-				playerDead();
-			}
-			else
-			{	
-				console.log('else');
-				
-			}
-		
-		   
-   		}
-	
-	
-	
+
+
+   if(boxright > pipeleft)
+   {
+
+      if(boxtop < pipetop+pipebottom)
+      {
+        playerDead();
+     }
+     else
+     {	
+
+
+     }
+
+
+  }
+
+
+
 
 
 }else{
    nextpipeupper = nextpipe.children(".pipe_lower");
-   console.log(nextpipe[0].childNodes[0].className);
-   console.log(nextpipeupper.height()+" "+pipeheight+" "+nextpipeupper.offset().left);
 
    pipetop = nextpipeupper.offset().top;
    pipeleft = nextpipeupper.offset().left - 2; // for some reason it starts at the inner pipes offset, not the outer pipes.
@@ -270,37 +276,36 @@ function gameloop() {
    
    
    if(boxright > pipeleft)
-   		{
-		
-			if(boxbottom > pipetop)
-			{
-				playerDead();
-			}
-			else
-			{	
-				console.log('else');
-				
-			}
-		
-		   
-   		}
-   
-   
-   
-   
-   
-	
-	
-	}
-   if(debugmode)
    {
-      var boundingbox = $("#pipebox");
-      boundingbox.css('left', pipeleft);
-      boundingbox.css('top', pipetop);
-      boundingbox.css('height', pipebottom);
-      boundingbox.css('width', pipewidth);
-   }
-   
+
+      if(boxbottom > pipetop)
+      {
+        playerDead();
+     }
+     else
+     {	
+
+     }
+
+
+  }
+
+
+
+
+
+
+
+}
+if(debugmode)
+{
+   var boundingbox = $("#pipebox");
+   boundingbox.css('left', pipeleft);
+   boundingbox.css('top', pipetop);
+   boundingbox.css('height', pipebottom);
+   boundingbox.css('width', pipewidth);
+}
+
    //have we gotten inside the pipe yet?
    /** if(boxright > pipeleft)
    {
@@ -419,7 +424,7 @@ function setMedal()
    
    if(score < 10)
       //signal that no medal has been won
-      return false;
+   return false;
    
    if(score >= 10)
       medal = "bronze";
@@ -454,8 +459,10 @@ function playerDead()
    //destroy our gameloops
    clearInterval(loopGameloop);
    clearInterval(loopPipeloop);
+   //clearInterval(loopCoinloop);
    loopGameloop = null;
    loopPipeloop = null;
+   //loopCoinloop=null;
 
    //mobile browsers don't support buzz bindOnce event
    if(isIncompatible.any())
@@ -550,27 +557,100 @@ function playerScore()
    setBigScore();
 }
 
+
+function updateCoins()
+{
+
+//Do any pipes need removal?
+$(".coin").filter(function() { return $(this).position().left <= -100; }).remove();
+
+
+if(isFirstTimeCoin==true){
+
+   if(isInBetweenCoin==true){
+      for(var i = 0; i <7;i+=2){
+         var posY= i*coinHeight+10;
+         var newcoin = $('<div class="coin animated"><div class="coinDrill" style="top: ' + posY + 'px;" ></div></div>');
+
+
+
+         $("#flyarea").append(newcoin);
+         coins.push(newcoin);
+      }
+   }else{
+
+      if(isBottom==true){
+
+
+
+         var ind = Math.ceil(_bottomHeight/(coinHeight+20));
+
+         for(var i = 0; i <7-ind;i++){
+            var posY= i*coinHeight+10;
+            var newcoin = $('<div class="coin animated"><div class="coinDrill" style="top: ' + posY + 'px;" ></div></div>');
+
+
+
+            $("#flyarea").append(newcoin);
+            coins.push(newcoin);
+         }
+      }else{
+
+
+         var ind =Math.ceil(((_topheight>140)?140:_topheight)/(coinHeight+20));
+
+         for(var i = 0; i <7-ind;i++){
+            var posY= i*coinHeight+((_topheight>140)?140:_topheight);
+            var newcoin = $('<div class="coin animated"><div class="coinDrill" style="top: ' + posY + 'px;" ></div></div>');
+
+
+
+            $("#flyarea").append(newcoin);
+            coins.push(newcoin);
+         }
+
+
+      }
+
+
+   }
+   isInBetweenCoin=!isInBetweenCoin;
+
+}else{
+
+   isFirstTimeCoin=true;
+}
+
+
+}
+
+
 function updatePipes()
 {
-   isBottom=!isBottom;
+
+   if(isSwitch==true){
+      isBottom=!isBottom;
    //Do any pipes need removal?
-   $(".pipe").filter(function() { return $(this).position().left <= -100; }).remove()
+   $(".pipe").filter(function() { return $(this).position().left <= -100; }).remove();
    
    //add a new pipe (top height + bottom height  + pipeheight == 420) and put it in our tracker
    var padding = 80;
    var constraint = 420 - pipeheight - (padding * 2); //double padding (for top and bottom)
    var topheight = Math.floor((Math.random()*constraint) + padding); //add lower padding
-  if(isBottom==true){
-           var bottomheight = (420 - pipeheight) - _topheight;
-         _bottomHeight = bottomheight;
-         var newpipe = $('<div class="pipe animated"><div class="pipe_lower" style="height: ' + bottomheight + 'px;"></div></div>');
+   if(isBottom==true){
+
+      _topheight=(_topheight>140)?140:_topheight;
+      var bottomheight = (420 - pipeheight) - _topheight;
+      console.log(constraint + " " + _topheight+ " "+_bottomHeight);
+      _bottomHeight = bottomheight;
+      var newpipe = $('<div class="pipe animated"><div class="pipe_lower" style="height: ' + bottomheight + 'px;"></div></div>');
 
 
 
-         $("#flyarea").append(newpipe);
-         pipes.push(newpipe);
+      $("#flyarea").append(newpipe);
+      pipes.push(newpipe);
 
-      }else{
+   }else{
 
          //top pipe
 
@@ -580,30 +660,37 @@ function updatePipes()
 
          $("#flyarea").append(newpipe);
          pipes.push(newpipe);
-	  }
+      }
+   }else{
+   }
+      isSwitch=!isSwitch;
+
+
+updateCoins();
+
 
 }
 
 var isIncompatible = {
    Android: function() {
-   return navigator.userAgent.match(/Android/i);
+      return navigator.userAgent.match(/Android/i);
    },
    BlackBerry: function() {
-   return navigator.userAgent.match(/BlackBerry/i);
+      return navigator.userAgent.match(/BlackBerry/i);
    },
    iOS: function() {
-   return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+      return navigator.userAgent.match(/iPhone|iPad|iPod/i);
    },
    Opera: function() {
-   return navigator.userAgent.match(/Opera Mini/i);
+      return navigator.userAgent.match(/Opera Mini/i);
    },
    Safari: function() {
-   return (navigator.userAgent.match(/OS X.*Safari/) && ! navigator.userAgent.match(/Chrome/));
+      return (navigator.userAgent.match(/OS X.*Safari/) && ! navigator.userAgent.match(/Chrome/));
    },
    Windows: function() {
-   return navigator.userAgent.match(/IEMobile/i);
+      return navigator.userAgent.match(/IEMobile/i);
    },
    any: function() {
-   return (isIncompatible.Android() || isIncompatible.BlackBerry() || isIncompatible.iOS() || isIncompatible.Opera() || isIncompatible.Safari() || isIncompatible.Windows());
+      return (isIncompatible.Android() || isIncompatible.BlackBerry() || isIncompatible.iOS() || isIncompatible.Opera() || isIncompatible.Safari() || isIncompatible.Windows());
    }
 };

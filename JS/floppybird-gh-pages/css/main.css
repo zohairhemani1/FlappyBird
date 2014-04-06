@@ -83,6 +83,26 @@
    100% { left: -100px; }
 }
 
+
+@-webkit-keyframes animCoin {
+   0% { left: 900px; }
+   100% { left: -100px; }
+}
+@-moz-keyframes animCoin {
+   0% { left: 900px; }
+   100% { left: -100px; }
+}
+@-o-keyframes animCoin {
+   0% { left: 900px; }
+   100% { left: -100px; }
+}
+@keyframes animCoin {
+   0% { left: 900px; }
+   100% { left: -100px; }
+}
+
+
+
 @-webkit-keyframes animCeiling {
    0% { background-position: 0px 0px; }
    100% { background-position: -63px 0px; }
@@ -332,11 +352,36 @@ Screen - Game
    animation: animPipe 7500ms linear;
 }
 
+
+.coin
+{
+   position: absolute;
+   left: -100px;
+   width: 44px;
+   height: 44%;
+   z-index: 10;
+   -webkit-animation: animCoin 7500ms linear;
+   animation: animCoin 7500ms linear;
+}
+
+
+.coinDrill
+{
+   position: absolute;
+   top: 0;
+   width: 44px;
+   height:44px;
+   background-image: url('../assets/medal_gold.png');
+   background-position: center;
+   margin-left: 30px;
+}
+
+
 .pipe_upper
 {
    position: absolute;
    top: 0;
-      width: 100px;
+   width: 100px;
    background-image: url('../assets/pipe.png');
    background-repeat: repeat-y;
    background-position: center;
